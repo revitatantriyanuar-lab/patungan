@@ -35,3 +35,35 @@ test("angka pecahan dibulatkan ke Rupiah terdekat", () => {
   assert.equal(hasil.service, 6173);
   assert.ok(Number.isInteger(hasil.grandTotal));
 });
+
+// ---- Tugas 2: pembulatan per orang dan selisih ----
+const { bagiRata } = require("./hitung.js");
+
+test("contoh uji utama: 4 orang → 72.500, lebih 1.250", () => {
+  const { grandTotal } = hitungTagihan({ total: 250000, persenService: 5, persenPajak: 10 });
+  const hasil = bagiRata(grandTotal, 4);
+  assert.equal(hasil.perOrang, 72500);
+  assert.equal(hasil.selisih, 1250);
+});
+
+test("pas habis dibagi: 100.000 untuk 4 orang → 25.000, selisih 0", () => {
+  assert.deepEqual(bagiRata(100000, 4), { perOrang: 25000, selisih: 0 });
+});
+
+test("selalu dibulatkan ke atas, tidak pernah ke bawah", () => {
+  // 100.001 ÷ 4 = 25.000,25 → harus 25.500, bukan 25.000
+  assert.equal(bagiRata(100001, 4).perOrang, 25500);
+});
+
+test("hasil per orang selalu kelipatan 500 dan total terkumpul tidak kurang", () => {
+  for (const [gt, n] of [[288750, 4], [287500, 6], [99999, 3], [1, 1], [513000, 7]]) {
+    const { perOrang, selisih } = bagiRata(gt, n);
+    assert.equal(perOrang % 500, 0);
+    assert.ok(perOrang * n >= gt);
+    assert.ok(selisih >= 0 && selisih < 500 * n);
+  }
+});
+
+test("satu orang membayar grand total yang sudah dibulatkan", () => {
+  assert.deepEqual(bagiRata(288750, 1), { perOrang: 289000, selisih: 250 });
+});
