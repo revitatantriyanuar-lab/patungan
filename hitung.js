@@ -72,10 +72,26 @@ function hitungSemua(input = {}) {
   return { ...tagihan, jumlahOrang, ...bagiRata(tagihan.grandTotal, jumlahOrang) };
 }
 
+// ---- Teks untuk grup WhatsApp ----
+// Ringkas dan rapi saat ditempel. *teks* jadi tebal di WhatsApp.
+// Baris service, pajak, dan tip hanya muncul kalau nilainya ada.
+function buatPesan(hasil, persenService = 0, persenPajak = 0) {
+  const rp = (n) => "Rp " + n.toLocaleString("id-ID");
+  const baris = ["*Patungan makan bareng*", `Subtotal: ${rp(hasil.subtotal)}`];
+  if (hasil.service > 0) baris.push(`Service ${persenService}%: ${rp(hasil.service)}`);
+  if (hasil.pajak > 0) baris.push(`Pajak ${persenPajak}%: ${rp(hasil.pajak)}`);
+  if (hasil.tip > 0) baris.push(`Tip: ${rp(hasil.tip)}`);
+  baris.push(`Total: ${rp(hasil.grandTotal)}`);
+  baris.push("");
+  baris.push(`Dibagi ${hasil.jumlahOrang} orang: *${rp(hasil.perOrang)}/orang*`);
+  if (hasil.selisih > 0) baris.push(`(dibulatkan ke atas, lebih ${rp(hasil.selisih)})`);
+  return baris.join("\n");
+}
+
 // Bisa dipakai di Node (untuk tes) maupun langsung di browser.
 if (typeof module !== "undefined" && module.exports) {
   module.exports = {
     hitungTagihan, bagiRata, KELIPATAN,
-    bacaRupiah, bacaJumlahOrang, bacaPersen, hitungSemua,
+    bacaRupiah, bacaJumlahOrang, bacaPersen, hitungSemua, buatPesan,
   };
 }

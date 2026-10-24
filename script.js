@@ -13,8 +13,14 @@
   const perOrang = $("per-orang");
   const selisih = $("selisih");
 
+  const salin = $("salin");
+  const cadangan = $("salin-cadangan");
+
   const MAKS_ORANG = 50;
+  const LABEL_SALIN = "Salin ke WhatsApp";
   let jumlahOrang = 2;
+  let pesanTerakhir = "";
+  let timerSalin;
 
   const rupiah = (n) => n.toLocaleString("id-ID");
 
@@ -59,7 +65,38 @@
     } else {
       selisih.textContent = `Dibulatkan ke atas, lebih Rp ${rupiah(hasil.selisih)}`;
     }
+
+    pesanTerakhir = buatPesan(hasil, pilihan("service"), pilihan("pajak"));
+    salin.disabled = hasil.grandTotal === 0;
+    if (!cadangan.hidden) cadangan.value = pesanTerakhir;
   }
+
+  function tandaiTersalin(teks) {
+    salin.textContent = teks;
+    clearTimeout(timerSalin);
+    timerSalin = setTimeout(() => { salin.textContent = LABEL_SALIN; }, 2000);
+  }
+
+  // Kalau peramban menolak menyalin otomatis, tampilkan teksnya
+  // dalam keadaan terpilih supaya bisa disalin manual.
+  function tampilkanCadangan() {
+    cadangan.hidden = false;
+    cadangan.value = pesanTerakhir;
+    cadangan.focus();
+    cadangan.select();
+    tandaiTersalin("Tekan lama teks di bawah, lalu Salin");
+  }
+
+  salin.addEventListener("click", () => {
+    if (!pesanTerakhir || salin.disabled) return;
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(pesanTerakhir)
+        .then(() => tandaiTersalin("Tersalin! Tempel di grup WA"))
+        .catch(tampilkanCadangan);
+    } else {
+      tampilkanCadangan();
+    }
+  });
 
   total.addEventListener("input", () => { rapikanRupiah(total); perbarui(); });
   tip.addEventListener("input", () => { rapikanRupiah(tip); perbarui(); });
