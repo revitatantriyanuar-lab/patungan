@@ -104,6 +104,19 @@ body {
 .hasil-angka { font: 600 2.6rem/1.1 var(--mono); color: var(--accent); font-variant-numeric: tabular-nums; }
 .hasil-catatan { font-size: 0.88rem; color: var(--muted); min-height: 1.3em; }
 
+.salin {
+  margin-top: 10px; width: 100%; padding: 14px 16px; border: 0; border-radius: 12px;
+  background: var(--accent); color: var(--accent-fg);
+  font: 600 1rem/1 var(--body); cursor: pointer;
+}
+.salin:disabled { opacity: 0.4; cursor: default; }
+.salin:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
+.salin-cadangan {
+  width: 100%; min-height: 9em; margin-top: 8px; padding: 10px;
+  border: 1.5px solid var(--line); border-radius: 10px; background: var(--bg); color: var(--fg);
+  font: 0.85rem/1.4 var(--mono); resize: vertical;
+}
+
 @media (min-width: 480px) {
   .hasil { margin-inline: 0; border: 1.5px solid var(--line); border-radius: 14px 14px 0 0; }
 }

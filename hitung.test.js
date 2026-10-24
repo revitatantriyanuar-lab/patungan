@@ -117,3 +117,35 @@ test("tidak ada input sama sekali tetap aman", () => {
   for (const v of Object.values(hasil)) assert.ok(Number.isFinite(v));
   assert.equal(hasil.jumlahOrang, 1);
 });
+
+// ---- Tugas 7: teks untuk WhatsApp ----
+const { buatPesan } = require("./hitung.js");
+
+test("pesan WA untuk contoh uji berisi rincian dan nominal per orang", () => {
+  const hasil = hitungSemua({ total: 250000, jumlahOrang: 4, persenService: 5, persenPajak: 10 });
+  assert.equal(buatPesan(hasil, 5, 10), [
+    "*Patungan makan bareng*",
+    "Subtotal: Rp 250.000",
+    "Service 5%: Rp 12.500",
+    "Pajak 10%: Rp 26.250",
+    "Total: Rp 288.750",
+    "",
+    "Dibagi 4 orang: *Rp 72.500/orang*",
+    "(dibulatkan ke atas, lebih Rp 1.250)",
+  ].join("\n"));
+});
+
+test("pesan WA tanpa service, pajak, tip, dan selisih tetap ringkas", () => {
+  const hasil = hitungSemua({ total: 100000, jumlahOrang: 4 });
+  const pesan = buatPesan(hasil);
+  assert.ok(!pesan.includes("Service"));
+  assert.ok(!pesan.includes("Pajak"));
+  assert.ok(!pesan.includes("Tip"));
+  assert.ok(!pesan.includes("lebih"));
+  assert.ok(pesan.includes("*Rp 25.000/orang*"));
+});
+
+test("tip muncul di pesan kalau diisi", () => {
+  const hasil = hitungSemua({ total: 200000, jumlahOrang: 2, tip: 20000 });
+  assert.ok(buatPesan(hasil).includes("Tip: Rp 20.000"));
+});
