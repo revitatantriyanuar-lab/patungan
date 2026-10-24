@@ -29,7 +29,53 @@ function bagiRata(grandTotal, jumlahOrang) {
   return { perOrang, selisih };
 }
 
+// ---- Validasi input ----
+// Input dari layar bisa berupa teks ("250.000", "Rp 250.000", "")
+// atau angka. Aturannya:
+//   - kosong atau bukan angka → 0
+//   - negatif → ditolak, dianggap 0
+//   - Rupiah selalu bilangan bulat (titik dan koma ribuan diabaikan)
+
+function bacaRupiah(nilai) {
+  if (typeof nilai === "number") {
+    return Number.isFinite(nilai) && nilai > 0 ? Math.round(nilai) : 0;
+  }
+  const teks = String(nilai ?? "").trim();
+  if (teks.startsWith("-")) return 0;
+  const angka = teks.replace(/\D/g, "");
+  return angka === "" ? 0 : Number(angka);
+}
+
+// Jumlah orang minimal 1 dan selalu bilangan bulat.
+function bacaJumlahOrang(nilai) {
+  const n = Math.floor(Number(nilai));
+  return Number.isFinite(n) && n >= 1 ? n : 1;
+}
+
+// Persen dibatasi 0 sampai 100.
+function bacaPersen(nilai) {
+  const p = Number(nilai);
+  if (!Number.isFinite(p) || p < 0) return 0;
+  return Math.min(p, 100);
+}
+
+// Satu pintu untuk layar: terima input mentah, kembalikan semua angka
+// yang perlu ditampilkan. Hasilnya tidak pernah NaN.
+function hitungSemua(input = {}) {
+  const tagihan = hitungTagihan({
+    total: bacaRupiah(input.total),
+    persenService: bacaPersen(input.persenService),
+    persenPajak: bacaPersen(input.persenPajak),
+    tip: bacaRupiah(input.tip),
+  });
+  const jumlahOrang = bacaJumlahOrang(input.jumlahOrang);
+  return { ...tagihan, jumlahOrang, ...bagiRata(tagihan.grandTotal, jumlahOrang) };
+}
+
 // Bisa dipakai di Node (untuk tes) maupun langsung di browser.
 if (typeof module !== "undefined" && module.exports) {
-  module.exports = { hitungTagihan, bagiRata, KELIPATAN };
+  module.exports = {
+    hitungTagihan, bagiRata, KELIPATAN,
+    bacaRupiah, bacaJumlahOrang, bacaPersen, hitungSemua,
+  };
 }

@@ -67,3 +67,53 @@ test("hasil per orang selalu kelipatan 500 dan total terkumpul tidak kurang", ()
 test("satu orang membayar grand total yang sudah dibulatkan", () => {
   assert.deepEqual(bagiRata(288750, 1), { perOrang: 289000, selisih: 250 });
 });
+
+// ---- Tugas 3: validasi input ----
+const { bacaRupiah, bacaJumlahOrang, bacaPersen, hitungSemua } = require("./hitung.js");
+
+test("jumlah orang minimal 1: 0, negatif, dan kosong jadi 1", () => {
+  for (const n of [0, -3, "", null, undefined, "abc"]) {
+    assert.equal(bacaJumlahOrang(n), 1);
+  }
+  assert.equal(bacaJumlahOrang(4), 4);
+  assert.equal(bacaJumlahOrang("6"), 6);
+});
+
+test("total kosong menghasilkan Rp 0, bukan NaN", () => {
+  for (const t of ["", null, undefined, "abc"]) {
+    const hasil = hitungSemua({ total: t, jumlahOrang: 4 });
+    assert.equal(hasil.grandTotal, 0);
+    assert.equal(hasil.perOrang, 0);
+    assert.equal(hasil.selisih, 0);
+  }
+});
+
+test("angka negatif ditolak", () => {
+  assert.equal(bacaRupiah(-50000), 0);
+  assert.equal(bacaRupiah("-50.000"), 0);
+  assert.equal(bacaPersen(-10), 0);
+});
+
+test("format Rupiah dari layar dibaca dengan benar", () => {
+  assert.equal(bacaRupiah("250.000"), 250000);
+  assert.equal(bacaRupiah("Rp 250.000"), 250000);
+  assert.equal(bacaRupiah("1,250,000"), 1250000);
+});
+
+test("persen di atas 100 dibatasi 100", () => {
+  assert.equal(bacaPersen(150), 100);
+  assert.equal(bacaPersen("10"), 10);
+});
+
+test("hitungSemua dengan input mentah memberi hasil contoh uji", () => {
+  const hasil = hitungSemua({ total: "250.000", jumlahOrang: "4", persenService: "5", persenPajak: "10", tip: "" });
+  assert.equal(hasil.grandTotal, 288750);
+  assert.equal(hasil.perOrang, 72500);
+  assert.equal(hasil.selisih, 1250);
+});
+
+test("tidak ada input sama sekali tetap aman", () => {
+  const hasil = hitungSemua();
+  for (const v of Object.values(hasil)) assert.ok(Number.isFinite(v));
+  assert.equal(hasil.jumlahOrang, 1);
+});
