@@ -1,0 +1,6 @@
+# File yang tidak ikut dipublikasikan ke situs Cloudflare.
+# Yang dipublikasikan hanya: index.html, style.css, script.js, hitung.js
+.git
+.assetsignore
+hitung.test.js
+*.md

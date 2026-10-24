@@ -35,9 +35,8 @@ node --test
 
 ## Deploy
 
-Situs ini statis dan di-deploy lewat Cloudflare Pages yang tersambung ke repo ini. Setiap merge ke `main` otomatis memperbarui situs.
+Situs ini statis dan di-deploy lewat Cloudflare Workers yang tersambung ke repo ini. Setiap merge ke `main` otomatis memperbarui situs.
 
-Pengaturan build di Cloudflare:
-- Framework preset: None
-- Build command: (kosong)
-- Build output directory: `/`
+Alamat: https://patungan.revita-tantriyanuar.workers.dev
+
+File `.assetsignore` mengatur apa yang tidak ikut dipublikasikan (folder `.git`, file tes, dan dokumen `.md`).
