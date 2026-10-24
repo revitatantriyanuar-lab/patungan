@@ -42,6 +42,15 @@
     kurang.disabled = hasil.jumlahOrang <= 1;
     tambah.disabled = hasil.jumlahOrang >= MAKS_ORANG;
 
+    // Rincian, supaya bisa dicocokkan dengan struk
+    $("r-subtotal").textContent = rupiah(hasil.subtotal);
+    $("r-service-label").textContent = `Service ${pilihan("service")}%`;
+    $("r-service").textContent = rupiah(hasil.service);
+    $("r-pajak-label").textContent = `Pajak ${pilihan("pajak")}%`;
+    $("r-pajak").textContent = rupiah(hasil.pajak);
+    $("r-tip").textContent = rupiah(hasil.tip);
+    $("r-total").textContent = rupiah(hasil.grandTotal);
+
     perOrang.textContent = "Rp " + rupiah(hasil.perOrang);
     if (hasil.grandTotal === 0) {
       selisih.textContent = "Isi total tagihan untuk mulai";

@@ -80,6 +80,19 @@ body {
 .seg input:checked + label { background: var(--accent); border-color: var(--accent); color: var(--accent-fg); }
 .seg input:focus-visible + label { outline: 2px solid var(--accent); outline-offset: 2px; }
 
+.rincian { display: grid; gap: 8px; }
+.rincian h2 { margin: 0; }
+.rincian dl {
+  margin: 0; padding: 12px 16px;
+  background: var(--surface); border: 1.5px dashed var(--line); border-radius: 12px;
+  font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: 0.95rem;
+}
+.baris { display: flex; justify-content: space-between; gap: 12px; padding: 3px 0; }
+.baris dt { color: var(--muted); }
+.baris dd { margin: 0; }
+.baris.total { border-top: 1.5px dashed var(--line); margin-top: 6px; padding-top: 9px; font-weight: 600; }
+.baris.total dt { color: var(--fg); }
+
 .hasil {
   position: sticky; bottom: 0;
   display: grid; justify-items: center; gap: 2px;
