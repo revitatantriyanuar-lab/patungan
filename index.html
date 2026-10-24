@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Patungan</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="app">
+    <header class="top">
+      <h1>Patungan</h1>
+      <p>Bagi tagihan makan bareng, termasuk service dan pajak.</p>
+    </header>
+
+    <form id="form" class="form" autocomplete="off">
+      <label class="field" for="total">
+        <span class="label">Total tagihan</span>
+        <span class="money">
+          <span class="rp">Rp</span>
+          <input id="total" name="total" type="text" inputmode="numeric" placeholder="0" enterkeyhint="done">
+        </span>
+      </label>
+
+      <div class="field">
+        <span class="label" id="orang-label">Jumlah orang</span>
+        <div class="stepper" role="group" aria-labelledby="orang-label">
+          <button type="button" id="kurang" aria-label="Kurangi satu orang">−</button>
+          <output id="orang" aria-live="polite">2</output>
+          <button type="button" id="tambah" aria-label="Tambah satu orang">+</button>
+        </div>
+      </div>
+
+      <fieldset class="field">
+        <legend class="label">Service</legend>
+        <div class="seg">
+          <input type="radio" name="service" id="service-0" value="0" checked><label for="service-0">0%</label>
+          <input type="radio" name="service" id="service-5" value="5"><label for="service-5">5%</label>
+          <input type="radio" name="service" id="service-10" value="10"><label for="service-10">10%</label>
+        </div>
+      </fieldset>
+
+      <fieldset class="field">
+        <legend class="label">Pajak</legend>
+        <div class="seg">
+          <input type="radio" name="pajak" id="pajak-0" value="0" checked><label for="pajak-0">0%</label>
+          <input type="radio" name="pajak" id="pajak-10" value="10"><label for="pajak-10">10%</label>
+        </div>
+      </fieldset>
+
+      <label class="field" for="tip">
+        <span class="label">Tip <em>(opsional)</em></span>
+        <span class="money small">
+          <span class="rp">Rp</span>
+          <input id="tip" name="tip" type="text" inputmode="numeric" placeholder="0" enterkeyhint="done">
+        </span>
+      </label>
+    </form>
+
+    <section class="hasil" aria-live="polite">
+      <span class="hasil-label">Per orang</span>
+      <span class="hasil-angka" id="per-orang">Rp 0</span>
+      <span class="hasil-catatan" id="selisih">Isi total tagihan untuk mulai</span>
+    </section>
+  </main>
+
+  <script src="hitung.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
