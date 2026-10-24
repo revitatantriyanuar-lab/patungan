@@ -114,7 +114,7 @@ body {
 .salin-cadangan {
   width: 100%; min-height: 9em; margin-top: 8px; padding: 10px;
   border: 1.5px solid var(--line); border-radius: 10px; background: var(--bg); color: var(--fg);
-  font: 0.85rem/1.4 var(--mono); resize: vertical;
+  font: 16px/1.4 var(--mono); resize: vertical; /* 16px: iPhone tidak zoom otomatis saat kotak ini dipilih */
 }
 
 @media (min-width: 480px) {
